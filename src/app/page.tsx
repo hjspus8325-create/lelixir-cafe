@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
+import QuickNavStrip from "@/components/QuickNavStrip";
 import Story from "@/components/Story";
 import MenuSection from "@/components/MenuSection";
 import BeanSommelier from "@/components/BeanSommelier";
@@ -21,13 +22,16 @@ export default function Home() {
       {/* Hero Section */}
       <Hero onOpenReservation={() => setIsReservationOpen(true)} />
 
+      {/* Quick Mobile Navigation Strip */}
+      <QuickNavStrip onOpenReservation={() => setIsReservationOpen(true)} />
+
       {/* Brand Story & Heritage */}
       <Story />
 
       {/* Tasting Menu Section */}
       <MenuSection />
 
-      {/* Interactive AI Bean Sommelier */}
+      {/* Interactive Bean Sommelier */}
       <BeanSommelier />
 
       {/* Atelier Locations */}

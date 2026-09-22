@@ -216,6 +216,10 @@ export default function ReservationModal({ isOpen, onClose }: ReservationModalPr
               >
                 Confirm Reservation
               </button>
+
+              <p className="text-[10px] text-[#e8dfd3]/50 text-center font-light mt-2">
+                Demo reservation flow for portfolio presentation — reservations are not submitted.
+              </p>
             </form>
           </div>
         ) : (
@@ -263,6 +267,10 @@ export default function ReservationModal({ isOpen, onClose }: ReservationModalPr
             >
               Done
             </button>
+
+            <p className="text-[10px] text-[#e8dfd3]/50 text-center font-light mt-4">
+              Demo reservation flow for portfolio presentation.
+            </p>
           </div>
         )}
       </div>

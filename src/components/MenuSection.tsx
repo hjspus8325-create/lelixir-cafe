@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Search, Filter, Sparkles, X, Coffee, Award, Info } from "lucide-react";
+import { motion, useReducedMotion, Variants } from "framer-motion";
 
 export interface MenuItem {
   id: string;
@@ -67,14 +68,14 @@ const MENU_ITEMS: MenuItem[] = [
     signature: false,
   },
   {
-    id: "golden-saffron-elixir",
-    name: "Golden Saffron Cardamom Cold Brew",
+    id: "cardamom-cold-brew",
+    name: "Cardamom Cold Brew",
     category: "elixir",
     price: "$11",
     origin: "Yirgacheffe, Ethiopia",
     roastLevel: 2,
-    flavorNotes: ["Persian Saffron", "Cardamom", "Orange Blossom", "Raw Honey"],
-    description: "24-hour cold brew infused with Kashmiri saffron threads, cardamom, and sparkling tonic foam.",
+    flavorNotes: ["Cardamom", "Orange Blossom", "Raw Honey", "Citrus Zest"],
+    description: "24-hour slow drip cold brew infused with crushed cardamom seeds and sparkling tonic foam.",
     pairing: "Cardamom Orange Madeleine",
     elevation: "1,950m",
     process: "Slow Cold Extraction",
@@ -82,12 +83,12 @@ const MENU_ITEMS: MenuItem[] = [
     signature: true,
   },
   {
-    id: "pain-au-chocolat-gold",
-    name: "24K Gold Leaf Pain au Chocolat",
+    id: "pain-au-chocolat",
+    name: "Dark Chocolate Pain au Chocolat",
     category: "pastry",
     price: "$12",
     flavorNotes: ["Valrhona 70% Dark Chocolate", "Normandy Butter", "Flaky Layers"],
-    description: "Baked daily using imported French AOP butter and Valrhona 70% dark chocolate callets, finished with gold leaf flakes.",
+    description: "Baked daily using imported French AOP butter and Valrhona 70% dark chocolate callets.",
     pairing: "Panama Geisha Espresso",
     image: "/images/signature_pastry.jpg",
     signature: true,
@@ -108,14 +109,14 @@ const MENU_ITEMS: MenuItem[] = [
     signature: true,
   },
   {
-    id: "kyoto-drip-cold-brew",
-    name: "Kyoto Slow-Drip Dutch Coffee",
+    id: "kyoto-style-slow-drip",
+    name: "Kyoto-Style Slow Drip",
     category: "elixir",
     price: "$10",
     origin: "Sumatra Mandheling",
     roastLevel: 4,
     flavorNotes: ["Dark Cocoa", "Cedar", "Pipe Tobacco", "Molasses"],
-    description: "Extracted drop by drop over 12 hours using a traditional Dutch cold drip tower. Rich body with low acidity.",
+    description: "Extracted drop by drop over 12 hours using a glass cold drip tower. Rich body with low acidity.",
     pairing: "Dark Chocolate Truffle",
     elevation: "1,400m",
     process: "Dutch Tower Cold Drip",
@@ -129,7 +130,7 @@ const MENU_ITEMS: MenuItem[] = [
     price: "$13.50",
     flavorNotes: ["Black Winter Truffle", "Aged Gruyère", "Smoked Sea Salt"],
     description: "Laminated croissant dough filled with shaved black truffle butter and aged Swiss Gruyère cheese.",
-    pairing: "Kyoto Slow-Drip Dutch Coffee",
+    pairing: "Kyoto-Style Slow Drip",
     image: "/images/signature_pastry.jpg",
     signature: false,
   },
@@ -140,6 +141,7 @@ export default function MenuSection() {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
+  const shouldReduceMotion = useReducedMotion();
 
   const categories = [
     { id: "all", label: "All Offerings" },
@@ -164,11 +166,51 @@ export default function MenuSection() {
     return matchesCategory && matchesTag && matchesSearch;
   });
 
+  const fadeInUpVariants: Variants = {
+    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 24 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: shouldReduceMotion ? 0 : 0.08,
+      },
+    },
+  };
+
+  const cardVariants: Variants = {
+    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
+
   return (
-    <section id="menu" className="py-20 sm:py-24 bg-[#0c0b0a] relative">
+    <section id="menu" className="py-16 sm:py-24 bg-[#0c0b0a] relative">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 md:px-12">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          variants={fadeInUpVariants}
+          className="text-center max-w-3xl mx-auto mb-10 sm:mb-16"
+        >
           <span className="text-xs font-semibold tracking-[0.25em] text-[#c5a059] uppercase block mb-3">
             Tasting Menu
           </span>
@@ -178,10 +220,16 @@ export default function MenuSection() {
           <p className="text-xs sm:text-sm text-[#e8dfd3] font-light">
             Every offering is prepared to order using in-house roasted micro-lot coffees and butter from Normandy.
           </p>
-        </div>
+        </motion.div>
 
         {/* Filter Controls Bar */}
-        <div className="flex flex-col gap-6 mb-10 sm:mb-12">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          variants={fadeInUpVariants}
+          className="flex flex-col gap-6 mb-10 sm:mb-12"
+        >
           {/* Categories Tabs */}
           <div className="flex justify-start md:justify-center gap-2 overflow-x-auto pb-2 scrollbar-none px-1">
             {categories.map((cat) => (
@@ -258,9 +306,9 @@ export default function MenuSection() {
               ))}
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Menu Grid */}
+        {/* Menu Grid with Stagger Reveal */}
         {filteredItems.length === 0 ? (
           <div className="text-center py-16 glass-panel rounded-3xl border-[#282420]">
             <Coffee className="w-10 h-10 text-[#c5a059]/40 mx-auto mb-3" />
@@ -279,10 +327,17 @@ export default function MenuSection() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            variants={containerVariants}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
+          >
             {filteredItems.map((item) => (
-              <div
+              <motion.div
                 key={item.id}
+                variants={cardVariants}
                 className="glass-panel glass-panel-hover rounded-3xl overflow-hidden flex flex-col justify-between group border-[#c5a059]/20"
               >
                 <div>
@@ -352,9 +407,9 @@ export default function MenuSection() {
                     <span>View Tasting Notes</span>
                   </button>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         )}
 
         {/* Selected Item Detail Modal */}

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { MapPin, Clock, Phone, Sparkles, Navigation, CheckCircle, Info } from "lucide-react";
 import Image from "next/image";
+import { motion, useReducedMotion, Variants } from "framer-motion";
 
 interface Location {
   id: string;
@@ -25,7 +26,7 @@ const LOCATIONS: Location[] = [
     cityArea: "Fortitude Valley, Brisbane",
     hours: "Mon – Sun: 07:30 AM – 09:00 PM",
     phone: "+61 (07) 3000 0000",
-    amenities: ["Probat Drum Roaster", "Custom Espresso Bar", "Private Cupping Room", "Valet Parking"],
+    amenities: ["Probat Drum Roaster", "Custom Espresso Bar", "Private Cupping Room", "Retail Bean Bar"],
     image: "/images/hero_bg.jpg",
   },
   {
@@ -36,7 +37,7 @@ const LOCATIONS: Location[] = [
     cityArea: "South Bank, Brisbane",
     hours: "Tue – Sun: 08:00 AM – 08:00 PM",
     phone: "+61 (07) 3000 0001",
-    amenities: ["Outdoor Glass Solarium", "Hand-Drip Bar", "Fresh Bakery Counter", "Patio Seating"],
+    amenities: ["Outdoor Glass Solarium", "Hand-Drip Bar", "Fresh Bakery Counter", "Patio Outdoor Seating"],
     image: "/images/artisan_pour_over.jpg",
   },
   {
@@ -47,19 +48,60 @@ const LOCATIONS: Location[] = [
     cityArea: "Brisbane CBD, Brisbane",
     hours: "Mon – Fri: 06:30 AM – 06:00 PM",
     phone: "+61 (07) 3000 0002",
-    amenities: ["Kyoto Cold Drip Towers", "Pre-Order Collection", "Standing Bar Counter"],
+    amenities: ["Kyoto Cold Drip Towers", "Pre-Order Collection", "Free Wi-Fi", "Wheelchair Access"],
     image: "/images/coffee_beans.jpg",
   },
 ];
 
 export default function Locations() {
   const [selectedLoc, setSelectedLoc] = useState<Location>(LOCATIONS[0]);
+  const shouldReduceMotion = useReducedMotion();
+
+  const fadeInUpVariants: Variants = {
+    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 24 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: shouldReduceMotion ? 0 : 0.08,
+      },
+    },
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
 
   return (
     <section id="locations" className="py-20 sm:py-24 bg-[#0c0b0a] relative">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 md:px-12">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          variants={fadeInUpVariants}
+          className="text-center max-w-2xl mx-auto mb-12 sm:mb-16"
+        >
           <span className="text-xs font-semibold tracking-[0.25em] text-[#c5a059] uppercase block mb-3">
             Our Locations
           </span>
@@ -73,13 +115,20 @@ export default function Locations() {
             <Info className="w-3.5 h-3.5 shrink-0" />
             <span>Concept project — fictional brand and location</span>
           </p>
-        </div>
+        </motion.div>
 
         {/* Multi-Location Switcher Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6 mb-10 sm:mb-12">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          variants={containerVariants}
+          className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6 mb-10 sm:mb-12"
+        >
           {LOCATIONS.map((loc) => (
-            <button
+            <motion.button
               key={loc.id}
+              variants={itemVariants}
               type="button"
               onClick={() => setSelectedLoc(loc)}
               className={`glass-panel p-6 rounded-3xl cursor-pointer text-left transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c5a059] ${
@@ -111,12 +160,18 @@ export default function Locations() {
                   <span>{loc.hours}</span>
                 </div>
               </div>
-            </button>
+            </motion.button>
           ))}
-        </div>
+        </motion.div>
 
         {/* Selected Location Feature Panel */}
-        <div className="glass-panel p-6 sm:p-10 rounded-3xl border-[#c5a059]/30 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 items-center">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          variants={fadeInUpVariants}
+          className="glass-panel p-6 sm:p-10 rounded-3xl border-[#c5a059]/30 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 items-center"
+        >
           {/* Image */}
           <div className="relative h-64 sm:h-96 rounded-2xl overflow-hidden glass-panel border-[#282420]">
             <Image
@@ -191,7 +246,7 @@ export default function Locations() {
               </p>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

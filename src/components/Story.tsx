@@ -2,10 +2,13 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Droplet, Sun, Flame, Sparkles, CheckCircle2 } from "lucide-react";
+import { Droplet, Sun, Flame, Sparkles, CheckCircle2, ChevronDown, ChevronUp } from "lucide-react";
+import { motion, useReducedMotion, Variants } from "framer-motion";
 
 export default function Story() {
   const [activeTab, setActiveTab] = useState<"sourcing" | "roasting" | "craft">("sourcing");
+  const [isExpandedMobile, setIsExpandedMobile] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
 
   const tabContent = {
     sourcing: {
@@ -40,24 +43,48 @@ export default function Story() {
     },
   };
 
+  const fadeInUpVariants: Variants = {
+    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 24 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
+
   return (
-    <section id="story" className="py-20 sm:py-24 bg-[#0c0b0a] relative overflow-hidden">
+    <section id="story" className="py-16 sm:py-24 bg-[#0c0b0a] relative overflow-hidden">
       {/* Ambient Glow */}
       <div className="absolute top-1/2 right-0 w-[300px] sm:w-[450px] h-[300px] sm:h-[450px] bg-[#c5a059]/5 rounded-full blur-[100px] sm:blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-8 md:px-12">
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          variants={fadeInUpVariants}
+          className="text-center max-w-2xl mx-auto mb-10 sm:mb-16"
+        >
           <span className="text-xs font-semibold tracking-[0.25em] text-[#c5a059] uppercase block mb-3">
             Our Heritage & Craft
           </span>
           <h2 className="font-serif text-3xl sm:text-5xl text-[#faf7f2] font-light leading-tight">
             Direct Sourcing & <span className="italic gold-gradient-text font-normal">Thoughtful Roasting</span>
           </h2>
-        </div>
+        </motion.div>
 
         {/* Tab Selection */}
-        <div className="flex justify-center gap-2.5 sm:gap-4 mb-10 sm:mb-14 flex-wrap">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          variants={fadeInUpVariants}
+          className="flex justify-center gap-2.5 sm:gap-4 mb-8 sm:mb-14 flex-wrap"
+        >
           {(["sourcing", "roasting", "craft"] as const).map((tab) => (
             <button
               key={tab}
@@ -74,10 +101,16 @@ export default function Story() {
               {tab === "craft" && "Water & Craft"}
             </button>
           ))}
-        </div>
+        </motion.div>
 
         {/* Dynamic Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          variants={fadeInUpVariants}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center"
+        >
           {/* Text Box */}
           <div className="glass-panel p-6 sm:p-10 rounded-3xl border-[#c5a059]/20 relative">
             <div className="w-12 h-12 rounded-2xl bg-[#151311] border border-[#c5a059]/30 flex items-center justify-center text-[#c5a059] mb-6">
@@ -90,37 +123,50 @@ export default function Story() {
               {tabContent[activeTab].title}
             </h3>
 
-            <p className="text-sm sm:text-base text-[#e8dfd3] leading-relaxed mb-6 sm:mb-8 font-light">
+            <p className="text-sm sm:text-base text-[#e8dfd3] leading-relaxed mb-6 font-light">
               {tabContent[activeTab].desc}
             </p>
 
-            <ul className="space-y-3 mb-8">
-              {tabContent[activeTab].features.map((feature, idx) => (
-                <li key={idx} className="flex items-center gap-3 text-xs sm:text-sm text-[#faf7f2]">
-                  <CheckCircle2 className="w-4 h-4 text-[#c5a059] shrink-0" />
-                  <span>{feature}</span>
-                </li>
-              ))}
-            </ul>
+            {/* Mobile collapsible view */}
+            <div className={`sm:block ${isExpandedMobile ? "block" : "hidden sm:block"}`}>
+              <ul className="space-y-3 mb-8">
+                {tabContent[activeTab].features.map((feature, idx) => (
+                  <li key={idx} className="flex items-center gap-3 text-xs sm:text-sm text-[#faf7f2]">
+                    <CheckCircle2 className="w-4 h-4 text-[#c5a059] shrink-0" />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
 
-            {/* Quote */}
-            <div className="pt-6 border-t border-[#282420] flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full bg-[#151311] border border-[#c5a059]/40 flex items-center justify-center text-[#c5a059] font-serif font-bold text-sm shrink-0">
-                ÉR
-              </div>
-              <div>
-                <p className="text-xs italic text-[#e8dfd3]">
-                  "Coffee is not merely a beverage; it is an expression of geography, soil, and human care."
-                </p>
-                <span className="text-[10px] sm:text-[11px] text-[#c5a059] uppercase tracking-wider block mt-0.5 font-medium">
-                  Émile Rivoire — Head Roaster
-                </span>
+              {/* Quote */}
+              <div className="pt-6 border-t border-[#282420] flex items-center gap-4">
+                <div className="w-10 h-10 rounded-full bg-[#151311] border border-[#c5a059]/40 flex items-center justify-center text-[#c5a059] font-serif font-bold text-sm shrink-0">
+                  ÉR
+                </div>
+                <div>
+                  <p className="text-xs italic text-[#e8dfd3]">
+                    "Coffee is not merely a beverage; it is an expression of geography, soil, and human care."
+                  </p>
+                  <span className="text-[10px] sm:text-[11px] text-[#c5a059] uppercase tracking-wider block mt-0.5 font-medium">
+                    Émile Rivoire — Head Roaster
+                  </span>
+                </div>
               </div>
             </div>
+
+            {/* Mobile Read More Toggle Button */}
+            <button
+              type="button"
+              onClick={() => setIsExpandedMobile(!isExpandedMobile)}
+              className="sm:hidden w-full mt-2 pt-3 border-t border-[#282420] text-xs text-[#c5a059] flex items-center justify-center gap-1.5 font-medium uppercase tracking-wider"
+            >
+              <span>{isExpandedMobile ? "Show Less" : "Read Full Story"}</span>
+              {isExpandedMobile ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </button>
           </div>
 
           {/* Visual Card */}
-          <div className="relative h-72 sm:h-[480px] rounded-3xl overflow-hidden glass-panel border-[#c5a059]/20 group">
+          <div className="relative h-64 sm:h-[480px] rounded-3xl overflow-hidden glass-panel border-[#c5a059]/20 group">
             <Image
               src={tabContent[activeTab].image}
               alt={tabContent[activeTab].title}
@@ -142,7 +188,7 @@ export default function Story() {
               <Sparkles className="w-5 h-5 text-[#c5a059] shrink-0" />
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

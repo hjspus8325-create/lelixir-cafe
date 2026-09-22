@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Sparkles, RefreshCw } from "lucide-react";
 import Image from "next/image";
+import { motion, useReducedMotion, Variants } from "framer-motion";
 
 interface Recommendation {
   title: string;
@@ -20,6 +21,7 @@ export default function BeanSommelier() {
   const [brew, setBrew] = useState<string | null>(null);
   const [timeOfDay, setTimeOfDay] = useState<string | null>(null);
   const [result, setResult] = useState<Recommendation | null>(null);
+  const shouldReduceMotion = useReducedMotion();
 
   const flavorOptions = [
     { id: "floral", label: "Floral & Citrus", desc: "Jasmine, Bergamot, Lemongrass" },
@@ -97,11 +99,29 @@ export default function BeanSommelier() {
     setResult(null);
   };
 
+  const fadeInUpVariants: Variants = {
+    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 24 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
+
   return (
-    <section id="sommelier" className="py-20 sm:py-24 bg-[#0c0b0a] relative">
+    <section id="sommelier" className="py-16 sm:py-24 bg-[#0c0b0a] relative">
       <div className="max-w-5xl mx-auto px-5 sm:px-8 md:px-12">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          variants={fadeInUpVariants}
+          className="text-center max-w-2xl mx-auto mb-10 sm:mb-16"
+        >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#151311] border border-[#c5a059]/30 text-xs text-[#c5a059] uppercase tracking-widest mb-4 font-medium">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Coffee Finder</span>
@@ -114,10 +134,16 @@ export default function BeanSommelier() {
           <p className="text-xs sm:text-sm text-[#e8dfd3] font-light">
             Answer three quick questions about your preferences to discover a personalized single-origin recommendation.
           </p>
-        </div>
+        </motion.div>
 
         {/* Sommelier Wizard Container */}
-        <div className="glass-panel p-6 sm:p-10 rounded-3xl border-[#c5a059]/30 shadow-2xl relative">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          variants={fadeInUpVariants}
+          className="glass-panel p-6 sm:p-10 rounded-3xl border-[#c5a059]/30 shadow-2xl relative"
+        >
           {!result ? (
             <div className="space-y-8 sm:space-y-10">
               {/* Step 1 */}
@@ -286,7 +312,7 @@ export default function BeanSommelier() {
               </div>
             </div>
           )}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
