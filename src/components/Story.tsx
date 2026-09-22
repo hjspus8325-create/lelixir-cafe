@@ -56,7 +56,7 @@ export default function Story() {
   };
 
   return (
-    <section id="story" className="py-16 sm:py-24 bg-[#0c0b0a] relative overflow-hidden">
+    <section id="story" className="py-16 sm:py-24 bg-[#0c0b0a] relative overflow-hidden scroll-mt-36 md:scroll-mt-28">
       {/* Ambient Glow */}
       <div className="absolute top-1/2 right-0 w-[300px] sm:w-[450px] h-[300px] sm:h-[450px] bg-[#c5a059]/5 rounded-full blur-[100px] sm:blur-[120px] pointer-events-none" />
 

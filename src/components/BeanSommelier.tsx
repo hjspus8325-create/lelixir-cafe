@@ -112,7 +112,7 @@ export default function BeanSommelier() {
   };
 
   return (
-    <section id="sommelier" className="py-16 sm:py-24 bg-[#0c0b0a] relative">
+    <section id="sommelier" className="py-16 sm:py-24 bg-[#0c0b0a] relative scroll-mt-36 md:scroll-mt-28">
       <div className="max-w-5xl mx-auto px-5 sm:px-8 md:px-12">
         {/* Header */}
         <motion.div

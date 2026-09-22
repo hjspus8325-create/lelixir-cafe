@@ -92,7 +92,7 @@ export default function Locations() {
   };
 
   return (
-    <section id="locations" className="py-20 sm:py-24 bg-[#0c0b0a] relative">
+    <section id="locations" className="py-20 sm:py-24 bg-[#0c0b0a] relative scroll-mt-36 md:scroll-mt-28">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 md:px-12">
         {/* Header */}
         <motion.div
