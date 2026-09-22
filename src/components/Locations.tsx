@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { MapPin, Clock, Phone, Sparkles, Navigation, CheckCircle } from "lucide-react";
+import { MapPin, Clock, Phone, Sparkles, Navigation, CheckCircle, Info } from "lucide-react";
 import Image from "next/image";
 
 interface Location {
@@ -9,11 +9,11 @@ interface Location {
   name: string;
   tag: string;
   address: string;
+  cityArea: string;
   hours: string;
   phone: string;
   amenities: string[];
   image: string;
-  mapCoordinates: string;
 }
 
 const LOCATIONS: Location[] = [
@@ -21,34 +21,34 @@ const LOCATIONS: Location[] = [
     id: "flagship",
     name: "Flagship Roastery & Cafe",
     tag: "Roastery & Tasting Room",
-    address: "742 Haute Avenue, Roastery District",
+    address: "Fortitude Valley, Brisbane QLD, Australia",
+    cityArea: "Fortitude Valley, Brisbane",
     hours: "Mon – Sun: 07:30 AM – 09:00 PM",
-    phone: "+1 (555) 019-8234",
+    phone: "+61 (07) 3000 0000",
     amenities: ["Probat Drum Roaster", "Custom Espresso Bar", "Private Cupping Room", "Valet Parking"],
     image: "/images/hero_bg.jpg",
-    mapCoordinates: "37.7749,-122.4194",
   },
   {
     id: "garden",
     name: "The Conservatory & Garden",
     tag: "Garden Courtyard",
-    address: "108 Botanical Lane, Glasshouse Courtyard",
+    address: "South Bank, Brisbane QLD, Australia",
+    cityArea: "South Bank, Brisbane",
     hours: "Tue – Sun: 08:00 AM – 08:00 PM",
-    phone: "+1 (555) 019-8892",
+    phone: "+61 (07) 3000 0001",
     amenities: ["Outdoor Glass Solarium", "Hand-Drip Bar", "Fresh Bakery Counter", "Patio Seating"],
     image: "/images/artisan_pour_over.jpg",
-    mapCoordinates: "37.7833,-122.4167",
   },
   {
     id: "downtown",
     name: "Financial District Espresso Bar",
     tag: "Espresso Bar",
-    address: "450 Financial Center Way, Plaza Level",
+    address: "Brisbane CBD, QLD, Australia",
+    cityArea: "Brisbane CBD, Brisbane",
     hours: "Mon – Fri: 06:30 AM – 06:00 PM",
-    phone: "+1 (555) 019-9921",
+    phone: "+61 (07) 3000 0002",
     amenities: ["Kyoto Cold Drip Towers", "Pre-Order Collection", "Standing Bar Counter"],
     image: "/images/coffee_beans.jpg",
-    mapCoordinates: "37.7900,-122.4000",
   },
 ];
 
@@ -66,8 +66,12 @@ export default function Locations() {
           <h2 className="font-serif text-3xl sm:text-5xl text-[#faf7f2] font-light leading-tight mb-4">
             Visit Our <span className="italic gold-gradient-text font-normal">Cafes</span>
           </h2>
-          <p className="text-xs sm:text-sm text-[#e8dfd3] font-light">
+          <p className="text-xs sm:text-sm text-[#e8dfd3] font-light mb-3">
             Designed as calm, welcoming spaces to pause and enjoy exceptional coffee.
+          </p>
+          <p className="text-[11px] text-[#c5a059]/80 flex items-center justify-center gap-1.5 font-light">
+            <Info className="w-3.5 h-3.5 shrink-0" />
+            <span>Concept project — fictional brand and location</span>
           </p>
         </div>
 
@@ -100,7 +104,7 @@ export default function Locations() {
               <div className="space-y-2 text-xs text-[#e8dfd3]">
                 <div className="flex items-start gap-2">
                   <MapPin className="w-3.5 h-3.5 text-[#c5a059] shrink-0 mt-0.5" />
-                  <span>{loc.address}</span>
+                  <span>{loc.cityArea}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="w-3.5 h-3.5 text-[#c5a059] shrink-0" />
@@ -171,16 +175,21 @@ export default function Locations() {
             </div>
 
             {/* Action */}
-            <a
-              href={`https://maps.google.com/?q=${encodeURIComponent(selectedLoc.address)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl gold-gradient-bg text-[#0c0b0a] font-semibold text-xs tracking-widest uppercase hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c5a059] transition-transform"
-              aria-label={`Get directions to ${selectedLoc.name}`}
-            >
-              <Navigation className="w-4 h-4" />
-              <span>Get Directions</span>
-            </a>
+            <div>
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedLoc.address)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl gold-gradient-bg text-[#0c0b0a] font-semibold text-xs tracking-widest uppercase hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c5a059] transition-transform"
+                aria-label={`Search region map for ${selectedLoc.cityArea}`}
+              >
+                <Navigation className="w-4 h-4" />
+                <span>Explore Region Map</span>
+              </a>
+              <p className="text-[11px] text-[#e8dfd3]/60 mt-2 font-light">
+                * Concept location for portfolio demonstration.
+              </p>
+            </div>
           </div>
         </div>
       </div>

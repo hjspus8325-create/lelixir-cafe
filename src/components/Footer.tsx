@@ -148,7 +148,7 @@ export default function Footer() {
 
         {/* Bottom copyright line */}
         <div className="pt-8 border-t border-[#1c1916] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#e8dfd3]/70 font-light">
-          <p>© {new Date().getFullYear()} L'ÉLIXIR Roastery & Cafe. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} L'ÉLIXIR Roastery & Cafe. Concept project — fictional brand and location.</p>
           <div className="flex gap-6">
             <a href="#" className="hover:text-[#c5a059] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c5a059] rounded-sm">Privacy Policy</a>
             <a href="#" className="hover:text-[#c5a059] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c5a059] rounded-sm">Terms of Service</a>
